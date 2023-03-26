@@ -13,7 +13,7 @@ string traverse(const cell* start,const int& pd,const int& sd,const int& td){
     while(linep->getAdjacent(pd)!=nullptr || linep->getAdjacent(sd)!=nullptr){
         const cell* cellp = linep;
         while(cellp!=nullptr){
-            ts+=(cellp->getLocation()+'');
+            ts+=(cellp->getLocation()+' ');
             cellp=cellp->getAdjacent(td);
         }
         if(linep->getAdjacent(pd)==nullptr)
