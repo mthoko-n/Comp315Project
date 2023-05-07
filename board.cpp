@@ -23,10 +23,42 @@ string traverse(const cell* start,const int& pd,const int& sd,const int& td){
     }
     return ts;
 }
-void setMarbles(cell* row,const int& z, const char& m){
-    for(int i=0;i<z;i++){
-        if(i > 1 && i < z-2){
-            row[i].setMarble(m);
+void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
+    
+    if(topSection){
+        for(int i=0;i<z;i++){
+            if(i > 1 && i < z-2){
+                row[i].setMarble(m);
+            }
+            else{
+                     row[i].setMarble('-');
+                }
+        }
+    }
+
+    else if(!topSection){
+        for(int i=0;i<z;i++){
+
+            if(z==8){
+                 if(i > 0 && i < z-1){
+                    row[i].setMarble(m);
+                }
+                else{
+                     row[i].setMarble('-');
+                }
+            }
+            else if(z==7){
+                 row[i].setMarble('+');
+            }
+            else if(z ==6){
+                 row[i].setMarble(m);
+            }
+
+            else{
+                row[i].setMarble('-');
+            }
+            
+            
         }
     }
     /*if(z==7){
@@ -88,18 +120,18 @@ board::board():woc(0),boc(0){
             connectHorizontal(rows[i],5+i);
             mapCells(rows[i],r--,5+i);
             if(i<3){
-                setMarbles(rows[i],5+i,'O');
+                setMarbles(rows[i],5+i,'O',true);
             }else
-                setMarbles(rows[i],5+i,'+');
+                setMarbles(rows[i],5+i,'+',true);
         }
         else{
             rows.push_back(new cell[5+8-i]);
             connectHorizontal(rows[i],5+8-i);
             mapCells(rows[i],r--,5+8-i);
             if(i>=6){
-                setMarbles(rows[i],5+8-i,'@');
+                setMarbles(rows[i],5+8-i,'@',false);
             }else
-                setMarbles(rows[i],5+8-i,'+');
+                setMarbles(rows[i],5+8-i,'+',false);
         }
     }
     for(int i=1;i<9;i++){
