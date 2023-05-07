@@ -102,18 +102,29 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
     }
 
     else {
-        if (sz == 8){
-            for (int i=f+2;i<(f+sz-2);i++){
+        if (sz == 7){
+            for (int i=f;i<(f+sz-1);i++){
                 if(f==0){
-                    lrow[i].setAdjacent(srow+i,2);
+                    srow[i].setAdjacent(lrow+i+1,0);
                 }
                 else if(f==1){
-                    lrow[i].setAdjacent(srow+i-1,3);
+                    srow[i].setAdjacent(lrow+i,5);
                 }
                 else return;            
             }
-        } else if (sz != 5){
-            for (int i=f+1;i<(f+sz-1);i++){
+        } else if (sz == 8){
+            for (int i=f+1;i<(f+sz-2);i++){
+                if(f==0){
+                    srow[i].setAdjacent(lrow+i+1,0);
+                }
+                else if(f==1){
+                    srow[i].setAdjacent(lrow+i,5);
+                }
+                else return;            
+            }
+        }
+        else if (sz == 6){
+            for (int i=f;i<(f+sz);i++){
                 if(f==0){
                     lrow[i].setAdjacent(srow+i,2);
                 }
@@ -254,9 +265,9 @@ string board::traverseDiagonal() const{
     return traverse(start,0,1,2); 
 }
 string board::traverseHorizontal() const{
-    map<string,cell*>::const_iterator it = cells.find(string("I7"));
+    map<string,cell*>::const_iterator it = cells.find(string("C1"));
     cell* start = it->second;
-    return traverse(start,3,0,1);
+    return traverse(start,5,0,2);
 }
 
 bool board::validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md, int& mtype, bool& scoreMove) const{
