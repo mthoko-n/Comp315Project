@@ -103,7 +103,7 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
 
     else {
         if (sz == 8){
-            for (int i=f+1;i<(f+sz-1);i++){
+            for (int i=f+2;i<(f+sz-2);i++){
                 if(f==0){
                     lrow[i].setAdjacent(srow+i,2);
                 }
@@ -113,7 +113,7 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
                 else return;            
             }
         } else if (sz != 5){
-            for (int i=f;i<(f+sz);i++){
+            for (int i=f+1;i<(f+sz-1);i++){
                 if(f==0){
                     lrow[i].setAdjacent(srow+i,2);
                 }
@@ -256,7 +256,7 @@ string board::traverseDiagonal() const{
 string board::traverseHorizontal() const{
     map<string,cell*>::const_iterator it = cells.find(string("I7"));
     cell* start = it->second;
-    return traverse(start,3,2,1);
+    return traverse(start,3,0,1);
 }
 
 bool board::validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md, int& mtype, bool& scoreMove) const{
