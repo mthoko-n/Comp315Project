@@ -38,8 +38,6 @@ void connectHorizontal(cell* row, const int& rz){
     for(int i=0;i<rz-1;i++){
         if (i != 0 && i != (rz -2)){
             row[i].setAdjacent(row+i+1,1);
-        } else {
-            row[i].setMarble('*');
         }
     }   
 }
@@ -84,24 +82,39 @@ void board::mapCells(cell* row,const char& r,const int& z){
 }
 board::board():woc(0),boc(0){
     char r = 'I';
-    for(int i=0;i<9;i++){
-        if(i<5){
+    for(int i=0;i<8;i++){
+        if (i < 7)
+        {
+            if(i<5){
             rows.push_back(new cell[5+i]);
             connectHorizontal(rows[i],5+i);
             mapCells(rows[i],r--,5+i);
-            if(i<3){
-                setMarbles(rows[i],5+i,'O');
-            }else
-                setMarbles(rows[i],5+i,'+');
+                if(i<3){
+                setMarbles(rows[i],5+i,'O',true);
+                }else{
+                    setMarbles(rows[i],5+i,'+',true);
+                }
+            }
+            else{
+                rows.push_back(new cell[5+8-i]);
+                connectHorizontal(rows[i],5+8-i);
+                mapCells(rows[i],r--,5+8-i);
+                if(i>=6){
+                    setMarbles(rows[i],5+8-i,'@', false);
+                }else
+                    setMarbles(rows[i],5+8-i,'+', false);
+            }
         }
-        else{
-            rows.push_back(new cell[5+8-i]);
+        else
+        {
+             rows.push_back(new cell[5+8-i]);
             connectHorizontal(rows[i],5+8-i);
             mapCells(rows[i],r--,5+8-i);
             if(i>=6){
-                setMarbles(rows[i],5+8-i,'@');
-            }else
-                setMarbles(rows[i],5+8-i,'+');
+                setMarbles(rows[i],5+8-i,'@', true);
+            }else{
+                setMarbles(rows[i],5+8-i,'+', true);
+            }
         }
     }
     for(int i=1;i<9;i++){
