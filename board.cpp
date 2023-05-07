@@ -68,10 +68,24 @@ void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
         }
     }*/
 }
-void connectHorizontal(cell* row, const int& rz){
-    for(int i=0;i<rz-1;i++){
-        row[i].setAdjacent(row+i+1,1);
-    }   
+void connectHorizontal(cell* row, const int& rz, const bool& topSection){
+    if (topSection){
+        for(int i=2;i<rz-3;i++){
+            row[i].setAdjacent(row+i+1,1);
+        }
+    } else {
+        if (rz == 8){
+            for(int i=1;i<rz-2;i++){
+                row[i].setAdjacent(row+i+1,1);
+            }
+        }
+        else if (rz != 5){
+            for(int i=0;i<rz-1;i++){
+                row[i].setAdjacent(row+i+1,1);
+            }
+        }
+    }
+
 }
 
 void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool& top){
