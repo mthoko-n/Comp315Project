@@ -23,74 +23,35 @@ string traverse(const cell* start,const int& pd,const int& sd,const int& td){
     }
     return ts;
 }
-void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
-    
-    if(topSection){
-        for(int i=0;i<z;i++){
-            if(i > 1 && i < z-2){
-                row[i].setMarble(m);
-            }
-            else{
-                     row[i].setMarble('-');
-                }
-        }
+void setMarbles(cell* row,const int& z, const char& m){
+    for(int i=0;i<z;i++){
+        row[i].setMarble(m);
     }
-
-    else if(!topSection){
-        for(int i=0;i<z;i++){
-
-            if(z==8){
-                 if(i > 0 && i < z-1){
-                    row[i].setMarble(m);
-                }
-                else{
-                     row[i].setMarble('-');
-                }
-            }
-            else if(z==7){
-                 row[i].setMarble('+');
-            }
-            else if(z ==6){
-                 row[i].setMarble(m);
-            }
-
-            else{
-                row[i].setMarble('-');
-            }
-            
-            
-        }
-    }
-    /*if(z==7){
+    if(z==7){
         char pos[4]={0,1,5,6};
         for(int i=0;i<4;i++){
             row[pos[i]].setMarble('+');
         }
-    }*/
-}
-void connectHorizontal(cell* row, const int& rz, const bool& topSection){
-    if (topSection){
-        for(int i=2;i<rz-3;i++){
-            row[i].setAdjacent(row+i+1,1);
-        }
-    } else {
-        if (rz == 8){
-            for(int i=1;i<rz-2;i++){
-                row[i].setAdjacent(row+i+1,1);
-            }
-        }
-        else if (rz != 5){
-            for(int i=0;i<rz-1;i++){
-                row[i].setAdjacent(row+i+1,1);
-            }
+    }
+    else if(z==9){
+        char pos[1]={4};
+        for(int i=0;i<1;i++){
+            row[pos[i]].setMarble('*');
         }
     }
-
+}
+void connectHorizontal(cell* row, const int& rz){
+    if (rz == 9){
+        row[4] = nullptr;
+    }
+    for(int i=0;i<rz-1;i++){
+        row[i].setAdjacent(row+i+1,1);
+    }   
 }
 
 void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool& top){
-    if(top){
-        for(int i=f+2;i<(f+sz-2);i++){
+    for(int i=f;i<(f+sz);i++){
+        if(top){
             if(f==0){//connecting from cell 0 in longer row
                 lrow[i].setAdjacent(srow+i,0);
             }
@@ -99,29 +60,14 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
             }
             else return;
         }
-    }
-
-    else {
-        if (sz == 8){
-            for (int i=f+2;i<(f+sz-2);i++){
-                if(f==0){
-                    lrow[i].setAdjacent(srow+i,2);
-                }
-                else if(f==1){
-                    lrow[i].setAdjacent(srow+i-1,3);
-                }
-                else return;            
+        else{
+            if(f==0){
+                lrow[i].setAdjacent(srow+i,2);
             }
-        } else if (sz != 5){
-            for (int i=f+1;i<(f+sz-1);i++){
-                if(f==0){
-                    lrow[i].setAdjacent(srow+i,2);
-                }
-                else if(f==1){
-                    lrow[i].setAdjacent(srow+i-1,3);
-                }
-                else return;            
+            else if(f==1){
+                lrow[i].setAdjacent(srow+i-1,3);
             }
+            else return;            
         }
     }
 }
@@ -146,21 +92,21 @@ board::board():woc(0),boc(0){
     for(int i=0;i<9;i++){
         if(i<5){
             rows.push_back(new cell[5+i]);
-            connectHorizontal(rows[i],5+i, true);
+            connectHorizontal(rows[i],5+i);
             mapCells(rows[i],r--,5+i);
             if(i<3){
-                setMarbles(rows[i],5+i,'O',true);
+                setMarbles(rows[i],5+i,'O');
             }else
-                setMarbles(rows[i],5+i,'+',true);
+                setMarbles(rows[i],5+i,'+');
         }
         else{
             rows.push_back(new cell[5+8-i]);
-            connectHorizontal(rows[i],5+8-i, false);
+            connectHorizontal(rows[i],5+8-i);
             mapCells(rows[i],r--,5+8-i);
             if(i>=6){
-                setMarbles(rows[i],5+8-i,'@',false);
+                setMarbles(rows[i],5+8-i,'@');
             }else
-                setMarbles(rows[i],5+8-i,'+',false);
+                setMarbles(rows[i],5+8-i,'+');
         }
     }
     for(int i=1;i<9;i++){
@@ -254,9 +200,9 @@ string board::traverseDiagonal() const{
     return traverse(start,0,1,2); 
 }
 string board::traverseHorizontal() const{
-    map<string,cell*>::const_iterator it = cells.find(string("I7"));
+    map<string,cell*>::const_iterator it = cells.find(string("A1"));
     cell* start = it->second;
-    return traverse(start,3,0,1);
+    return traverse(start,5,0,1);
 }
 
 bool board::validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md, int& mtype, bool& scoreMove) const{
