@@ -237,7 +237,80 @@ int main(int argc, char** argv) {
     }
 
     else if (num == 3){
-        //Ntando & Kupiwa
+      ifstream storeSeed("storeSeed.txt");
+            int now;
+            string line;
+            getline(storeSeed, line);
+            stringstream ss(line);
+            ss>>now;
+            srand(now); // replay several games
+
+            board abalone;
+            string state(abalone);
+            
+            agent* w = new randAgent('O');
+            agent* b = new distAgent('@');
+            movement* pom=nullptr;//previous opponent's move
+            movement* mym=nullptr;//player's chosen move
+            char c='O';
+            int n = 5;
+            for(int i=0;i<200;i++){
+                try{
+                    if(c=='O'){
+                        movement mm = w->move(pom,abalone);
+                        mym = new movement(mm);
+                        if(pom)
+                            delete pom;
+                        pom = new movement(mm);
+                    }
+                    else{
+                        movement mm = b->move(pom,abalone);
+                        mym = new movement(mm);
+                        if(pom)
+                            delete pom;
+                        pom = new movement(mm);
+                    }
+                }
+                catch(const string& s){
+                    cout<<s;
+                    return 1;
+                }        
+                bool valid=abalone.executeMove(c,mym->l,mym->n,mym->fd,mym->md);
+
+                ifstream lastM("moves.txt");
+                int lastMoveReadFromFile;
+                string line;
+                while(getline(lastM, line)) {
+                    stringstream ss(line);
+                    ss>>lastMoveReadFromFile;
+                }
+             
+                if(i > lastMoveReadFromFile) {
+                    cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
+                    if(valid){
+                        string state(abalone);         
+                        cout<<"Next State:"<<endl<<state; 
+                    }
+                    else{
+                        cout<<"Invalid move!!"<<endl;
+                    }
+                }
+                if(c=='O') 
+                    c='@';
+                else
+                    c='O'; 
+                delete mym;
+                SLP(1);
+                //system(CL);
+            }
+            if(pom)
+                delete pom;
+            delete w;
+            delete b;
+
+            storeSeed.close();
+            
+            return 0;      
     }
 
     else{
