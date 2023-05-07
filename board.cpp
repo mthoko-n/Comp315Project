@@ -23,17 +23,48 @@ string traverse(const cell* start,const int& pd,const int& sd,const int& td){
     }
     return ts;
 }
-void setMarbles(cell* row,const int& z, const char& m){
-    for(int i=0;i<z;i++){
-        row[i].setMarble(m);
-    }
-    if(z==7){
-        char pos[4]={0,1,5,6};
-        for(int i=0;i<4;i++){
-            row[pos[i]].setMarble('+');
+void setMarbles(cell* row,const int& z, const char& m, bool top){
+    
+  /*  if(top){
+        for(int i=0;i<z;i++){
+            
+                if(i >=2 && i < z-2){
+                row[i].setMarble(m);
+                }
+                else{
+                    row[i].setMarble('*');
+                }
+                                
         }
     }
+    else{
+        for(int i=0;i<z;i++){
+                         
+        if(z==8){
+                if(i >1 && 1 < z-1){
+                    
+                    
+                        row[i].setMarble('+');
+                        
+                    
+                }
+            }
+         else if(z==7){          
+            row[i].setMarble('+');
+                        
+                    
+         }
+
+    else{ 
+                             
+            row[i].setMarble('@');
+         }                  
+
+    }
+    }
+    */
 }
+
 void connectHorizontal(cell* row, const int& rz){
     for(int i=0;i<rz-1;i++){
         if (i != 0 && i != (rz -2)){
