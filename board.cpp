@@ -41,12 +41,19 @@ void setMarbles(cell* row,const int& z, const char& m){
     }
 }
 void connectHorizontal(cell* row, const int& rz){
-    if (rz == 9){
-        row[4] = nullptr;
+    if (rz==9) {
+        for(int i=0;i<rz-6;i++){
+            row[i].setAdjacent(row+i+1,1);
+        }
+        for(int i=rz-4; i < rz-2;i++){
+            row[i].setAdjacent(row+i+1,1);
+        } 
     }
-    for(int i=0;i<rz-1;i++){
-        row[i].setAdjacent(row+i+1,1);
-    }   
+    else{
+        for(int i=0;i<rz-1;i++){
+            row[i].setAdjacent(row+i+1,1);
+        } 
+    }
 }
 
 void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool& top){
