@@ -89,8 +89,8 @@ void connectHorizontal(cell* row, const int& rz, const bool& topSection){
 }
 
 void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool& top){
-    for(int i=f;i<(f+sz);i++){
-        if(top){
+    if(top){
+        for(int i=f+2;i<(f+sz-2);i++){
             if(f==0){//connecting from cell 0 in longer row
                 lrow[i].setAdjacent(srow+i,0);
             }
@@ -99,14 +99,29 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
             }
             else return;
         }
-        else{
-            if(f==0){
-                lrow[i].setAdjacent(srow+i,2);
+    }
+
+    else {
+        if (sz == 8){
+            for (int i=f+1;i<(f+sz-1);i++){
+                if(f==0){
+                    lrow[i].setAdjacent(srow+i,2);
+                }
+                else if(f==1){
+                    lrow[i].setAdjacent(srow+i-1,3);
+                }
+                else return;            
             }
-            else if(f==1){
-                lrow[i].setAdjacent(srow+i-1,3);
+        } else if (sz != 5){
+            for (int i=f;i<(f+sz);i++){
+                if(f==0){
+                    lrow[i].setAdjacent(srow+i,2);
+                }
+                else if(f==1){
+                    lrow[i].setAdjacent(srow+i-1,3);
+                }
+                else return;            
             }
-            else return;            
         }
     }
 }
@@ -239,9 +254,9 @@ string board::traverseDiagonal() const{
     return traverse(start,0,1,2); 
 }
 string board::traverseHorizontal() const{
-    map<string,cell*>::const_iterator it = cells.find(string("A1"));
+    map<string,cell*>::const_iterator it = cells.find(string("I7"));
     cell* start = it->second;
-    return traverse(start,5,0,1);
+    return traverse(start,3,2,1);
 }
 
 bool board::validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md, int& mtype, bool& scoreMove) const{
