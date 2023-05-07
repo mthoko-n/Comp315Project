@@ -25,12 +25,19 @@ class board{
     map<string,cell*> cells;
     int woc;//white marbles off the board count.
     int boc;//black marbles off the board count.
+    void mapCells(cell* row,const char& r,const int& z);
 public:
     board();//create 61 cells on the heap, and connect them.
+    board(const board&);//copy constructor
     ~board();//recycle 61 cells.
+    map<string,cell*> getCells() const;
+    bool inPlay() const;
     operator std::string() const;//cast this object into a string.
     string traverseHorizontal() const;
     string traverseDiagonal() const;
+    bool validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md,int& mtype,bool& scoreMove) const;
+    bool executeMove(const char& m,const string& l,const int& n, const int& fd, const int& md);
+    void refreshOffboardCounts();
 };
 
 

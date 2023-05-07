@@ -10,21 +10,16 @@
 string traverse(const cell* start,const int& pd,const int& sd,const int& td){
     string ts;
     const cell* linep = start;
-    while(linep->getAdjacent(pd)!=nullptr || linep->getAdjacent(sd)!=nullptr){
+    while(linep!=nullptr){
         const cell* cellp = linep;
         while(cellp!=nullptr){
-            ts+=(cellp->getLocation()+' ');
+            ts+=(cellp->getLocation()+' '); 
             cellp=cellp->getAdjacent(td);
         }
         if(linep->getAdjacent(pd)==nullptr)
             linep=linep->getAdjacent(sd);
         else
             linep=linep->getAdjacent(pd);
-    }
-    const cell* cellp = linep;
-    while(cellp!=nullptr){
-        ts+=(cellp->getLocation()+' ');
-        cellp=cellp->getAdjacent(td);
     }
     return ts;
 }
@@ -41,8 +36,12 @@ void setMarbles(cell* row,const int& z, const char& m){
 }
 void connectHorizontal(cell* row, const int& rz){
     for(int i=0;i<rz-1;i++){
-        row[i].setAdjacent(row+i+1,1);
-    }  
+        if (i != 0 && i != (rz -2)){
+            row[i].setAdjacent(row+i+1,1);
+        } else {
+            row[i].setMarble('*');
+        }
+    }   
 }
 
 void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool& top){
@@ -63,12 +62,11 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
             else if(f==1){
                 lrow[i].setAdjacent(srow+i-1,3);
             }
-            else return;
-            
+            else return;            
         }
     }
 }
-void mapCells(cell* row,map<string,cell*>& cm,const char& r,const int& z){    
+void board::mapCells(cell* row,const char& r,const int& z){    
     int f=1;
     if(r>='A'&& r<='E'){
         f=1;
@@ -81,16 +79,16 @@ void mapCells(cell* row,map<string,cell*>& cm,const char& r,const int& z){
         ss<<(i+f);
         string lc = ss.str();
         row[i].setLocation(lc);
-        cm[lc]=row+i;
+        cells[lc]=row+i;
     }
 }
-board::board(){
+board::board():woc(0),boc(0){
     char r = 'I';
     for(int i=0;i<9;i++){
         if(i<5){
             rows.push_back(new cell[5+i]);
             connectHorizontal(rows[i],5+i);
-            mapCells(rows[i],cells,r--,5+i);
+            mapCells(rows[i],r--,5+i);
             if(i<3){
                 setMarbles(rows[i],5+i,'O');
             }else
@@ -99,7 +97,7 @@ board::board(){
         else{
             rows.push_back(new cell[5+8-i]);
             connectHorizontal(rows[i],5+8-i);
-            mapCells(rows[i],cells,r--,5+8-i);
+            mapCells(rows[i],r--,5+8-i);
             if(i>=6){
                 setMarbles(rows[i],5+8-i,'@');
             }else
@@ -116,6 +114,35 @@ board::board(){
             connectDiagonal(rows[i-1],rows[i],1,5+8-i,false);
         }
     }
+    cell* linep = rows[0];//start at I5
+    while(linep!=nullptr){
+        cell* cellp = linep;
+        while(cellp!=nullptr){
+            for(int i=0;i<6;i++){
+                cellp->setDistanceToEdge(i);
+            }
+            cellp=cellp->getAdjacent(1);
+        }
+        if(linep->getAdjacent(3)==nullptr)
+            linep=linep->getAdjacent(2);
+        else
+            linep=linep->getAdjacent(3);
+    }
+}
+
+board::board(const board& copy): board(){//constructor delegation - C++11
+    woc=copy.woc;
+    boc=copy.boc;
+    map<string,cell*>::const_iterator it = copy.cells.begin();
+    while(it!=copy.cells.end()){
+        (cells[it->first])->setMarble((*(it->second)).getMarble());
+        it++;
+    }
+
+    
+}
+map<string,cell*> board::getCells() const{
+    return cells;
 }
 board::~board(){
     for(int i=0;i<9;i++){
@@ -153,25 +180,146 @@ board::operator std::string() const{
     for(;d<6;d++)
         ss<<d<<" ";
     ss<<endl;
+    for(int i=0;i<woc;i++)
+        ss<<'O'<<" ";
+    ss<<endl;
+    for(int i=0;i<boc;i++)
+        ss<<'@'<<" ";
+    ss<<endl; 
     return ss.str();
 }
 
 string board::traverseDiagonal() const{
-    //backward diagonal - nw to se
-    /*
-    map<string,cell*>::const_iterator it = cells.find(string("A1"));
-    cell* start = it->second;
-    return traverse(start,1,0,5); 
-    */ 
-    //forward diagonal - sw to ne
-    /**/
     map<string,cell*>::const_iterator it = cells.find(string("E1"));
     cell* start = it->second;
     return traverse(start,0,1,2); 
-    /**/
 }
 string board::traverseHorizontal() const{
     map<string,cell*>::const_iterator it = cells.find(string("A1"));
     cell* start = it->second;
     return traverse(start,5,0,1);
+}
+
+bool board::validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md, int& mtype, bool& scoreMove) const{
+    if(!cell::validateLocation(l))//confirm existence of location
+        return false;
+    else{        
+        cell* cp = cells.at(l);//initialize to leading cell
+        const char marble = cp->getMarble();
+        if(marble!=m)//trying to move a space or a marble that is not yours
+            return false;
+        for(int i=1;i<n;i++){
+            cp=cp->getAdjacent(fd);
+            if(cp==nullptr || marble!=cp->getMarble())//confirm availability and type of claimed resources
+                return false;
+        }
+        if(fd==getAdjacentIndex(md)){//in-line move
+            cp = cells.at(l);//initialize to leading cell
+            mtype=0;//how many opponent marbles are in front of the leading marble i.e in the move direction
+            for(int i=0;i<n;i++){
+                cp=cp->getAdjacent(md);
+                if(cp!=nullptr){//confirm availability of required resources
+                    if(marble==cp->getMarble())//met own marble instead of space
+                        return false;
+                    if('+'!=cp->getMarble())//if it belongs to opponent
+                        mtype++;//count opponent marbles
+                    else
+                        break;
+                }
+                else{
+                    if(mtype>0)//opponent's marble will be pushed off the board
+                        scoreMove=true;
+                    else//if trying to push your own marble off the board
+                        return false;
+                    break;
+                }
+            }
+            if(mtype>=n)//should only push fewer than n of the opponent's marbles
+                return false;
+        }
+        else{//broad-side move
+            mtype=-1;
+            if(n<=1)//broad-side move must use at least 2 marbles
+                return false;
+            cp = cells.at(l);
+            for(int i=0;i<n;i++){
+                cell* dp=cp->getAdjacent(md);//destination pointer
+                if(dp!=nullptr && '+' == dp->getMarble())//is there an empty space to move to?
+                    cp=cp->getAdjacent(fd);
+                else
+                    return false;
+            }
+        }
+        return true;
+    }
+}
+
+bool board::executeMove(const char& m,const string& l,const int& n, const int& fd, const int& md){
+    int moveType = 0;//default to in-line with no following marbles
+    bool scoreMove = false;
+    bool valid = validateMove(m,l,n,fd,md,moveType,scoreMove);
+    if(valid){
+        if(moveType==-1){//broad-side
+            if(cells.find(l)==cells.end()) return false;
+            cell* cp = cells.at(l);
+            for(int i=0;i<n;i++){
+                if(cp==nullptr) return false;
+                cell* dp=cp->getAdjacent(md);//destination pointer
+                if(dp==nullptr) return false;
+                dp->setMarble(cp->getMarble());
+                cp->setMarble('+');
+                cp=cp->getAdjacent(fd); 
+            }
+        }
+        else{//in-line
+            cell* cp = cells.at(l), *rearp=cp;
+            const char marble = cp->getMarble();
+            cell* frontp=cp->getAdjacent(md);
+            for(int i=1;i<n;i++){
+                rearp=rearp->getAdjacent(fd);
+            }
+            if(scoreMove){                
+                frontp->setMarble(rearp->getMarble());
+                rearp->setMarble('+'); 
+                if(marble=='O')
+                    boc++;
+                if(marble=='@')
+                    woc++;
+            }
+            else{
+                cell* tipp = frontp;
+                for(int i=0;i<moveType;i++){
+                    tipp=tipp->getAdjacent(md);//looking for empty space
+                }
+                if(moveType!=0)//tipp is already equal to frontp
+                    tipp->setMarble(frontp->getMarble());
+                frontp->setMarble(rearp->getMarble());
+                rearp->setMarble('+');
+            }
+        }
+    }
+    return valid;
+}
+bool board::inPlay() const{
+    if((woc<6) && (boc<6))
+        return true;
+    return false;
+}
+void board::refreshOffboardCounts(){
+    int wOnBoard = 0;
+    int bOnBoard = 0;
+    
+    map<string,cell*>::const_iterator it = cells.begin();
+    while(it!= cells.end()){
+        if((cells[it->first])->getMarble() == 'O'){
+            wOnBoard++;
+        }
+        if((cells[it->first])->getMarble() == '@'){
+            bOnBoard++;
+        }
+        it++;
+    }
+    
+    woc = 14 - wOnBoard;
+    boc = 14 - bOnBoard;
 }

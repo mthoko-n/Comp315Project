@@ -16,12 +16,15 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 using namespace std;
+int getAdjacentIndex(const int& i);
 class cell{    
     char marble;
     vector<cell*> adjacent;//six directions: north-east clockwise to north-west
-    string location;
+    string location; 
+    vector<int> distanceToEdge; //how far is the boundary from this cell.
     
 public:
     char getMarble() const;
@@ -29,7 +32,10 @@ public:
     cell* getAdjacent(const int&) const;
     void setAdjacent(cell*,const int&);//only set each neighbour once.
     string getLocation() const;
+    static bool validateLocation(const string& l);
     void setLocation(const string& l);
+    void setDistanceToEdge(const int&);
+    int getDistanceToEdge(const int&) const;
     cell();//set all 6 neighbours to null.
 };
 
