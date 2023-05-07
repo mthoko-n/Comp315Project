@@ -131,7 +131,7 @@ board::board():woc(0),boc(0){
     for(int i=0;i<9;i++){
         if(i<5){
             rows.push_back(new cell[5+i]);
-            connectHorizontal(rows[i],5+i);
+            connectHorizontal(rows[i],5+i, true);
             mapCells(rows[i],r--,5+i);
             if(i<3){
                 setMarbles(rows[i],5+i,'O',true);
@@ -140,7 +140,7 @@ board::board():woc(0),boc(0){
         }
         else{
             rows.push_back(new cell[5+8-i]);
-            connectHorizontal(rows[i],5+8-i);
+            connectHorizontal(rows[i],5+8-i, false);
             mapCells(rows[i],r--,5+8-i);
             if(i>=6){
                 setMarbles(rows[i],5+8-i,'@',false);
