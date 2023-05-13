@@ -34,6 +34,12 @@ void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
                      row[i].setMarble('-');
                 }
         }
+
+         if (z==9){
+                char pos[1]={4};
+                row[pos[0]].setMarble('*');
+              
+            }
     }
 
     else if(!topSection){
@@ -47,6 +53,9 @@ void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
                      row[i].setMarble('-');
                 }
             }
+
+           
+
             else if(z==7){
                  row[i].setMarble('+');
             }
@@ -54,13 +63,20 @@ void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
                  row[i].setMarble(m);
             }
 
+            
+    
             else{
                 row[i].setMarble('-');
             }
             
             
         }
+
+
     }
+
+       
+
     /*if(z==7){
         char pos[4]={0,1,5,6};
         for(int i=0;i<4;i++){
