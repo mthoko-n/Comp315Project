@@ -15,7 +15,7 @@ char cell::getMarble()const{
     return marble;
 }
 void cell::setMarble(const char& m){
-    if(m=='O' || m=='@' || m=='+'){
+    if(m=='O' || m=='@' || m=='+' || m == '*'){
         marble=m;
     }
 }
