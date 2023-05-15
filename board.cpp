@@ -89,7 +89,8 @@ void connectHorizontal(cell* row, const int& rz, const bool& topSection){
         for(int i=2;i<rz-3;i++){
             row[i].setAdjacent(row+i+1,1);
         }
-    } else {
+    }
+    else {
         if (rz == 8){
             for(int i=1;i<rz-2;i++){
                 row[i].setAdjacent(row+i+1,1);
@@ -100,6 +101,14 @@ void connectHorizontal(cell* row, const int& rz, const bool& topSection){
                 row[i].setAdjacent(row+i+1,1);
             }
         }
+        else if (rz==9) {
+            for(int i=0;i<rz-6;i++){
+                row[i].setAdjacent(row+i+1,1);
+            }
+            for(int i=rz-4; i < rz-2;i++){
+                row[i].setAdjacent(row+i+1,1);
+            } 
+    }
     }
 
 }
@@ -107,11 +116,23 @@ void connectHorizontal(cell* row, const int& rz, const bool& topSection){
 void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool& top){
     if(top){
         for(int i=f+2;i<(f+sz-2);i++){
-            if(f==0){//connecting from cell 0 in longer row
-                lrow[i].setAdjacent(srow+i,0);
+            if(f==0){//connecting from cell 0 in longer row 
+                if(sz == 8) {
+                    if (i != 4)
+                       lrow[i].setAdjacent(srow+i,0);
+                    // lrow[4].setAdjacent(srow+4,0);
+                } 
+                else
+                    lrow[i].setAdjacent(srow+i,0);
             }
             else if(f==1){//connecting from cell 1 in longer row
-                lrow[i].setAdjacent(srow+i-1,5);
+                if(sz == 8) {
+                    if (i != 4) {
+                        lrow[i].setAdjacent(srow+i-1,5);
+                    }
+                }
+                else
+                    lrow[i].setAdjacent(srow+i-1,5);
             }
             else return;
         }
@@ -131,9 +152,11 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
         } else if (sz == 8){
             for (int i=f+1;i<(f+sz-2);i++){
                 if(f==0){
-                    srow[i].setAdjacent(lrow+i+1,0);
+                    if (i != 3)
+                        srow[i].setAdjacent(lrow+i+1,0);
                 }
                 else if(f==1){
+                    if (i != 4)
                     srow[i].setAdjacent(lrow+i,5);
                 }
                 else return;            
