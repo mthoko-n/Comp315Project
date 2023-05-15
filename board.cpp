@@ -86,8 +86,15 @@ void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
 }
 void connectHorizontal(cell* row, const int& rz, const bool& topSection){
     if (topSection){
-        for(int i=2;i<rz-3;i++){
-            row[i].setAdjacent(row+i+1,1);
+        if (rz == 9){
+           for(int i=2;i<rz-3;i++){
+                if (i != 4 && i != 3)
+                    row[i].setAdjacent(row+i+1,1);
+            }
+        } else {
+             for(int i=2;i<rz-3;i++){
+                row[i].setAdjacent(row+i+1,1);
+            }
         }
     }
     else {
@@ -101,16 +108,7 @@ void connectHorizontal(cell* row, const int& rz, const bool& topSection){
                 row[i].setAdjacent(row+i+1,1);
             }
         }
-        else if (rz==9) {
-            for(int i=0;i<rz-6;i++){
-                row[i].setAdjacent(row+i+1,1);
-            }
-            for(int i=rz-4; i < rz-2;i++){
-                row[i].setAdjacent(row+i+1,1);
-            } 
     }
-    }
-
 }
 
 void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool& top){
