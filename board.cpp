@@ -200,7 +200,7 @@ board::board():woc(0),boc(0){
             connectDiagonal(rows[i-1],rows[i],1,5+8-i,false);
         }
     }
-    cell* linep = rows[0];//start at I5
+    cell* linep = rows[0]+2;//start at I7cell* linep = rows[0];//start at I5
     while(linep!=nullptr){
         cell* cellp = linep;
         while(cellp!=nullptr){
