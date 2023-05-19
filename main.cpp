@@ -27,22 +27,22 @@ int main(int argc, char** argv) {
 
 
    // Welcome Board
-    cout << "-----------------------------------------------" << endl;
-    cout << "|||||||||||||||||||||||||||||||||||||||||||||||" << endl;
-    cout << "||||                                       ||||" << endl;
-    cout << "||||                            O          ||||" << endl;
-    cout << "||||      WELCOME              O O         ||||" << endl;
-    cout << "||||           TO             O O O        ||||" << endl;
-    cout << "||||               ABALONE   O O O O       ||||" << endl;
-    cout << "||||                                       ||||" << endl;
-    cout << "||||_______________________________________||||" << endl;
-    cout << "|||||||||||||||||||||||||||||||||||||||||||||||" << endl;
-    cout << "-----------------------------------------------" << endl;
+    std::cout << "-----------------------------------------------" << endl;
+    std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||" << endl;
+    std::cout << "||||                                       ||||" << endl;
+    std::cout << "||||                            O          ||||" << endl;
+    std::cout << "||||      WELCOME              O O         ||||" << endl;
+    std::cout << "||||           TO             O O O        ||||" << endl;
+    std::cout << "||||               ABALONE   O O O O       ||||" << endl;
+    std::cout << "||||                                       ||||" << endl;
+    std::cout << "||||_______________________________________||||" << endl;
+    std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||" << endl;
+    std::cout << "-----------------------------------------------" << endl;
     //Options for the game
-    cout << "Enter a number between(1-3): "<<endl;
-    cout << "1 - New Game"<<endl;
-    cout << "2 - Replay"<<endl;
-    cout << "3 - Resume"<<endl;
+    std::cout << "Enter a number between(1-3): "<<endl;
+    std::cout << "1 - New Game"<<endl;
+    std::cout << "2 - Replay"<<endl;
+    std::cout << "3 - Resume"<<endl;
     
     int num = 0; // Variable for Option chosen
     //ofstream storeSeed("storeSeed.txt");
@@ -53,30 +53,34 @@ int main(int argc, char** argv) {
     cin >> num; //  Option chosen
     int diff =0; // Variable for Difficulty chosen
     if (num == 1){
-        cout << "Enter difficulty level (1: easy/2: hard): ";  
+        std::cout << "Enter difficulty level (1: easy/2: hard): ";  
         cin >> diff ; // Difficulty chosen
 
+        ofstream storeSeed("storeSeed.txt");
+        storeSeed << diff << endl;
         if (diff == 1){
 
             time_t now = time(NULL); // store the now object into a file.
             srand(now); // replay several games
 
             // store the now object into a file and then 
-            ofstream storeSeed("storeSeed.txt");
-            storeSeed<<now<<endl;
+            
+            storeSeed<<now;
             storeSeed.close();
+            
 
 
-            cout<<"Seed: "<<now<<endl;
+            std::cout<<"Seed: "<<now<<endl;
             board abalone;
             string state(abalone);
-            cout<<"Initial State:"<<endl<<state;
+            std::cout<<"Initial State:"<<endl<<state;
             agent* w = new randAgent('O');
             agent* b = new distAgent('@');
             movement* pom=nullptr;//previous opponent's move
             movement* mym=nullptr;//player's chosen move
             char c='O';
-            for(int i=0;i<200;i++){
+            int i = 0;
+            while(abalone.inPlay()){//for(int i=0;i<200;i++){
                 try{
                     if(c=='O'){
                         movement mm = w->move(pom,abalone);
@@ -94,29 +98,30 @@ int main(int argc, char** argv) {
                     }
                 }
                 catch(const string& s){
-                    cout<<s;
+                    std::cout<<s;
                     return 1;
                 }        
                 bool valid=abalone.executeMove(c,mym->l,mym->n,mym->fd,mym->md);
-                cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
+                std::cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
                 if(valid){
                     string state(abalone);         
-                    cout<<"Next State:"<<endl<<state; 
+                    std::cout<<"Next State:"<<endl<<state; 
                 }
                 else{
-                    cout<<"Invalid move!!"<<endl;
+                    std::cout<<"Invalid move!!"<<endl;
                 }
                 if(c=='O') 
                     c='@';
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                //SLP(1);
                 //system(CL);
 
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
                 lastMove.close();
+                i++;
             }
             if(pom)
                 delete pom;
@@ -129,16 +134,21 @@ int main(int argc, char** argv) {
         else if (diff == 2){
             time_t now = time(NULL);
             srand(now);
-            cout<<"Seed: "<<now<<endl;
+
+            storeSeed<<now;
+            storeSeed.close();
+
+            std::cout<<"Seed: "<<now<<endl;
             board abalone;
             string state(abalone);
-            cout<<"Initial State:"<<endl<<state;
+            std::cout<<"Initial State:"<<endl<<state;
             agent* w = new distAgent('O');
             agent* b = new distAgent('@');
             movement* pom=nullptr;//previous opponent's move
             movement* mym=nullptr;//player's chosen move
             char c='O';
-            for(int i=0;i<200;i++){
+            int i = 0;
+            while(abalone.inPlay()) {
                 try{
                     if(c=='O'){
                         movement mm = w->move(pom,abalone);
@@ -156,28 +166,29 @@ int main(int argc, char** argv) {
                     }
                 }
                 catch(const string& s){
-                    cout<<s;
+                    std::cout<<s;
                     return 1;
                 }        
                 bool valid=abalone.executeMove(c,mym->l,mym->n,mym->fd,mym->md);
-                cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
+                std::cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
                 if(valid){
                     string state(abalone);         
-                    cout<<"Next State:"<<endl<<state; 
+                    std::cout<<"Next State:"<<endl<<state; 
                 }
                 else{
-                    cout<<"Invalid move!!"<<endl;
+                    std::cout<<"Invalid move!!"<<endl;
                 }
                 if(c=='O') 
                     c='@';
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                //SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
                 lastMove.close();
+                i++;
             }
             if(pom)
                 delete pom;
@@ -195,26 +206,49 @@ int main(int argc, char** argv) {
             //time_t now = time(NULL); // store the now object into a file.
 
             ifstream storeSeed("storeSeed.txt");
+            
             int now;
+            int diff;
+            
             string line;
             getline(storeSeed, line);
-            //now = stoul(line);
             stringstream ss(line);
-            ss>>now;
+            ss>>diff;
+
+            getline(storeSeed, line);
+            stringstream zz(line);
+            zz>>now;
+            
+            
             srand(now); // replay several games
+
+           
+            
+            //now = stoul(line);
+            
 
             //ofstream lastMove("moves.txt");
 
             board abalone;
             string state(abalone);
-            cout<<"Initial State:"<<endl<<state;
-            agent* w = new randAgent('O');
-            agent* b = new distAgent('@');
+            std::cout<<"Initial State:"<<endl<<state;
+           
+            agent* w = nullptr;
+
+            if(diff == 1)
+                w = new randAgent('O'); // white should always win
+            
+            else
+                w = new distAgent('O');
+               
+
+            agent* b = new distAgent('@');   
             movement* pom=nullptr;//previous opponent's move
             movement* mym=nullptr;//player's chosen move
             char c='O';
             int n = 5;
-            for(int i=0;i<200;i++){
+            int i = 0;
+            while(abalone.inPlay()){
                 try{
                     if(c=='O'){
                         movement mm = w->move(pom,abalone);
@@ -232,28 +266,29 @@ int main(int argc, char** argv) {
                     }
                 }
                 catch(const string& s){
-                    cout<<s;
+                    std::cout<<s;
                     return 1;
                 }        
                 bool valid=abalone.executeMove(c,mym->l,mym->n,mym->fd,mym->md);
-                cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
+                std::cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
                 if(valid){
                     string state(abalone);         
-                    cout<<"Next State:"<<endl<<state; 
+                    std::cout<<"Next State:"<<endl<<state; 
                 }
                 else{
-                    cout<<"Invalid move!!"<<endl;
+                    std::cout<<"Invalid move!!"<<endl;
                 }
                 if(c=='O') 
                     c='@';
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                //SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
                 lastMove.close();
+                i++;
             }
             if(pom)
                 delete pom;
@@ -286,7 +321,8 @@ int main(int argc, char** argv) {
             movement* mym=nullptr;//player's chosen move
             char c='O';
             int n = 5;
-            for(int i=0;i<200;i++){
+            int i = 0;
+            while(abalone.inPlay()){
                 try{
                     if(c=='O'){
                         movement mm = w->move(pom,abalone);
@@ -304,7 +340,7 @@ int main(int argc, char** argv) {
                     }
                 }
                 catch(const string& s){
-                    cout<<s;
+                    std::cout<<s;
                     return 1;
                 }        
                 bool valid=abalone.executeMove(c,mym->l,mym->n,mym->fd,mym->md);
@@ -318,13 +354,13 @@ int main(int argc, char** argv) {
                 }
              
                 if(i > lastMoveReadFromFile) {
-                    cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
+                    std::cout<<"Move "<<i+1<<": "<<c<<","<<mym->l<<","<<mym->n<<","<<mym->fd<<","<<mym->md<<endl;
                     if(valid){
                         string state(abalone);         
-                        cout<<"Next State:"<<endl<<state; 
+                        std::cout<<"Next State:"<<endl<<state; 
                     }
                     else{
-                        cout<<"Invalid move!!"<<endl;
+                        std::cout<<"Invalid move!!"<<endl;
                     }
                 }
                 if(c=='O') 
@@ -332,8 +368,9 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                //SLP(1);
                 //system(CL);
+                i++;
             }
             if(pom)
                 delete pom;
@@ -346,27 +383,16 @@ int main(int argc, char** argv) {
     }
 
     else{
-        cout << "Enter a number between 1 and 3" << endl;
+        std::cout << "Enter a number between 1 and 3" << endl;
     }
-
-
-    /*
-    
-    Ntando and Kupiwa will be adding an obstacle on their own specified location (E)
-    
-    
-    */
-
-    /*
-    
-    Mthoko , Munazzah , Sthembiso will modify the shape of board
-    
-    
-    */
-
-
-
 }
+
+
+
+
+
+
+
 
 
 
