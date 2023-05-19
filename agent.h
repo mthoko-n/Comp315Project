@@ -53,6 +53,13 @@ struct moveTNDPriority{//priority based on move types and distance to edge
        return score(a)<score(b);
    }     
 }; 
+
+struct lessPriority{//priority based on move types and distance to edge    
+   inline bool operator()(const movement& a, const movement& b) {
+       return score(a)>score(b);
+   }    
+};
+
 class agent{
 protected:
     char symbol;
@@ -72,6 +79,12 @@ public:
 class distAgent: public agent{
 public:
     distAgent(const char&);
+    movement move(movement const* const,board);
+};
+
+class easyAgent: public agent{
+public:
+    easyAgent(const char&);
     movement move(movement const* const,board);
 };
 

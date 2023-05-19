@@ -27,14 +27,17 @@ int main(int argc, char** argv) {
 
 
    // Welcome Board
-    cout << "--------------------------------------------" << endl;
-    cout << "|                                          |" << endl;
-    cout << "|                                          |" << endl;
-    cout << "|         Welcome to Abalone               |"<<endl;
-    cout << "|                                          |" << endl;
-    cout << "|                                          |" << endl;
-    cout << "--------------------------------------------" << endl;
-
+    cout << "-----------------------------------------------" << endl;
+    cout << "|||||||||||||||||||||||||||||||||||||||||||||||" << endl;
+    cout << "||||                                       ||||" << endl;<
+    cout << "||||                            O          ||||" << endl;
+    cout << "||||      WELCOME              O O         ||||" << endl;
+    cout << "||||           TO             O O O        ||||" << endl;
+    cout << "||||               ABALONE   O O O O       ||||" << endl;
+    cout << "||||                                       ||||" << endl;
+    cout << "||||_______________________________________||||" << endl;
+    cout << "|||||||||||||||||||||||||||||||||||||||||||||||" << endl;
+    cout << "-----------------------------------------------" << endl;
     //Options for the game
     cout << "Enter a number between(1-3): "<<endl;
     cout << "1 - New Game"<<endl;

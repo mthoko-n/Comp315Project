@@ -102,3 +102,22 @@ movement distAgent::move(movement const* const om,board bd){
         return mv[i];
     }
 }
+
+easyAgent::easyAgent(const char& c):agent(c){}
+
+movement easyAgent::move(movement const* const om,board bd){
+    vector<movement> mv = findMoves(bd);
+    sort(mv.begin(), mv.end(),lessPriority());
+    const int wm2c = 3;//consider only these top best moves.
+    if(mv.size()==0){
+        throw string("Error! There are no available moves!");
+    }
+    if(mv.size()<wm2c)
+        return mv[0];
+    else{
+        int i=rand()%wm2c;
+        return mv[i];
+    }
+}
+
+
