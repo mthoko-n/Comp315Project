@@ -408,8 +408,14 @@ bool board::executeMove(const char& m,const string& l,const int& n, const int& f
     return valid;
 }
 bool board::inPlay() const{
-    if((woc<6) && (boc<6))
+    if((woc<2) && (boc<2))
         return true;
+    if(woc >= 2) {
+        cout << "Black Wins!!!" << endl;
+    }
+    else if(boc >=2) {
+        cout << "White Wins!!!" << endl;
+    }
     return false;
 }
 void board::refreshOffboardCounts(){
