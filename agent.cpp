@@ -73,7 +73,7 @@ double score(const movement& a){
         return maxScore*(1+(1-a.d2e)/9.0);
     }
     else{
-        return maxScore*(1-abs(5-a.d2e)/5.0);
+        return maxScore*(1-std::abs(5-a.d2e)/5.0);
     }        
 }
 
