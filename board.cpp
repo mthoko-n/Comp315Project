@@ -427,6 +427,6 @@ void board::refreshOffboardCounts(){
         it++;
     }
     
-    woc = 14 - wOnBoard;
-    boc = 14 - bOnBoard;
+    woc = 6 - wOnBoard;
+    boc = 6 - bOnBoard;
 }
