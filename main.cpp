@@ -115,7 +115,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                //SLP(1);
+                SLP(1);
                 //system(CL);
 
                 ofstream lastMove("moves.txt");
@@ -183,7 +183,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                //SLP(1);
+                SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
@@ -283,7 +283,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                //SLP(1);
+                SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
@@ -305,17 +305,41 @@ int main(int argc, char** argv) {
     else if (num == 3){
         //Ntando & Kupiwa & Munazzah
             ifstream storeSeed("storeSeed.txt");
+            
             int now;
+            int diff;
+            
             string line;
             getline(storeSeed, line);
             stringstream ss(line);
-            ss>>now;
+            ss>>diff;
+
+            getline(storeSeed, line);
+            stringstream zz(line);
+            zz>>now;
+            
+            
             srand(now); // replay several games
+
+           
+            
+            //now = stoul(line);
+            
+
+            //ofstream lastMove("moves.txt");
 
             board abalone;
             string state(abalone);
+            std::cout<<"Initial State:"<<endl<<state;
+           
+            agent* w = nullptr;
+
+            if(diff == 1)
+                w = new randAgent('O'); // white should always win
             
-            agent* w = new randAgent('O');
+            else
+                w = new distAgent('O');
+
             agent* b = new distAgent('@');
             movement* pom=nullptr;//previous opponent's move
             movement* mym=nullptr;//player's chosen move
@@ -362,13 +386,16 @@ int main(int argc, char** argv) {
                     else{
                         std::cout<<"Invalid move!!"<<endl;
                     }
+                    SLP(1);
+                    ofstream lastMove("moves.txt");
+                    lastMove<<i;
+                    lastMove.close();
                 }
                 if(c=='O') 
                     c='@';
                 else
                     c='O'; 
                 delete mym;
-                //SLP(1);
                 //system(CL);
                 i++;
             }
@@ -386,20 +413,3 @@ int main(int argc, char** argv) {
         std::cout << "Enter a number between 1 and 3" << endl;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
