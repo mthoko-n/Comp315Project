@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
    // Welcome Board
     cout << "-----------------------------------------------" << endl;
     cout << "|||||||||||||||||||||||||||||||||||||||||||||||" << endl;
-    cout << "||||                                       ||||" << endl;<
+    cout << "||||                                       ||||" << endl;
     cout << "||||                            O          ||||" << endl;
     cout << "||||      WELCOME              O O         ||||" << endl;
     cout << "||||           TO             O O O        ||||" << endl;
