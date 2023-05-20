@@ -291,7 +291,12 @@ board::operator std::string() const{
         if(i<5){
             ss<<setw(5-i)<<r<<" ";
             for(int k=0;k<5+i;k++){
-                ss<<rows[i][k].getMarble()<<" ";
+                  if (rows[i][k].getMarble()=='-' || rows[i][k].getMarble()=='*'){
+                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET;
+                }
+                else{
+                    ss<<rows[i][k].getMarble()<<" ";
+                }
             }
             ss<<endl;
             r--;
@@ -299,7 +304,12 @@ board::operator std::string() const{
         else{
             ss<<setw(i-3)<<r<<" ";
             for(int k=0;k<5+8-i;k++){
-                ss<<rows[i][k].getMarble()<<" ";
+                  if (rows[i][k].getMarble()=='-' || rows[i][k].getMarble()=='*'){
+                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET;
+                }
+                else{
+                    ss<<rows[i][k].getMarble()<<" ";
+                }
             }
             ss<<d<<endl;
             r--;
