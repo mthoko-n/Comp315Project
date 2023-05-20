@@ -1,4 +1,10 @@
 /*
+Kupiwa Nangati
+Sithembiso Ntanzi
+Munazzah Hassan
+Ntandokayise Cele
+Mthokozisi Nxumalo
+
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -114,7 +120,7 @@ int main(int argc, char** argv) {
             std::cout<<"Seed: "<<now<<endl;
             string state(abalone);
             std::cout<<"Initial State:"<<endl<<state;
-            w = new easyAgent('O');
+            w = new randAgent('O');
             b = new distAgent('@');
             char c='O';
             int i = 0;

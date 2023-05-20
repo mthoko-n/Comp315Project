@@ -1,4 +1,13 @@
 /*
+
+Kupiwa Nangati
+Sithembiso Ntanzi
+Munazzah Hassan
+Ntandokayise Cele
+Mthokozisi Nxumalo
+
+
+
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -50,24 +59,24 @@ const cell* board::getCell(const cell* cell, const string& location, const int& 
 
 void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
     
-    if(topSection){
+    if(topSection){  //Top half of the board
         for(int i=0;i<z;i++){
             if(i > 1 && i < z-2){
                 row[i].setMarble(m);
             }
             else{
-                     row[i].setMarble('-');
+                     row[i].setMarble('-'); //Sets disable cells to"-"
                 }
         }
 
-         if (z==9){
+         if (z==9){ //Obstacle addition
                 char pos[1]={4};
                 row[pos[0]].setMarble('*');
               
             }
     }
 
-    else if(!topSection){
+    else if(!topSection){ //Bottom-Half of the board
         for(int i=0;i<z;i++){
 
             if(z==8){
@@ -75,7 +84,7 @@ void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
                     row[i].setMarble(m);
                 }
                 else{
-                     row[i].setMarble('-');
+                     row[i].setMarble('-'); //Sets disable cells to"-"
                 }
             }
 
@@ -91,7 +100,7 @@ void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
             
     
             else{
-                row[i].setMarble('-');
+                row[i].setMarble('-');  //Sets disable cells to"-"
             }
             
             
@@ -100,35 +109,29 @@ void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
 
     }
 
-       
 
-    /*if(z==7){
-        char pos[4]={0,1,5,6};
-        for(int i=0;i<4;i++){
-            row[pos[i]].setMarble('+');
-        }
-    }*/
 }
 void connectHorizontal(cell* row, const int& rz, const bool& topSection){
+   
     if (topSection){
-        if (rz == 9){
+        if (rz == 9){  //Row E
            for(int i=2;i<rz-3;i++){
-                if (i != 4 && i != 3)
-                    row[i].setAdjacent(row+i+1,1);
+                if (i != 4 && i != 3)   //Disconnecting obstacle's horizontal cell neighbours in row E
+                    row[i].setAdjacent(row+i+1,1);   //Sets non-obstacle horizontal cell neighbours in row E
             }
         } else {
              for(int i=2;i<rz-3;i++){
-                row[i].setAdjacent(row+i+1,1);
+                row[i].setAdjacent(row+i+1,1); //Sets horizontal cell neighbours in the top half  of the board
             }
         }
     }
-    else {
+    else { //Bottom-half of the board
         if (rz == 8){
             for(int i=1;i<rz-2;i++){
                 row[i].setAdjacent(row+i+1,1);
             }
         }
-        else if (rz != 5){
+        else if (rz != 5){ //Sets horizonal cell neighbours besides row A
             for(int i=0;i<rz-1;i++){
                 row[i].setAdjacent(row+i+1,1);
             }
@@ -137,11 +140,12 @@ void connectHorizontal(cell* row, const int& rz, const bool& topSection){
 }
 
 void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool& top){
+    
     if(top){
         for(int i=f+2;i<(f+sz-2);i++){
             if(f==0){//connecting from cell 0 in longer row 
                 if(sz == 8) {
-                    if (i != 4)
+                    if (i != 4) //Avoids creating a diagonal connection with our obstacle
                        lrow[i].setAdjacent(srow+i,0);
                     // lrow[4].setAdjacent(srow+4,0);
                 } 
@@ -150,7 +154,7 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
             }
             else if(f==1){//connecting from cell 1 in longer row
                 if(sz == 8) {
-                    if (i != 4) {
+                    if (i != 4) { //Avoids creating a diagonal connection with our obstacle
                         lrow[i].setAdjacent(srow+i-1,5);
                     }
                 }
@@ -161,7 +165,7 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
         }
     }
 
-    else {
+    else { //Bottom-half of the board
         if (sz == 7){
             for (int i=f;i<(f+sz-1);i++){
                 if(f==0){
@@ -175,11 +179,11 @@ void connectDiagonal(cell* lrow,cell* srow,const int& f,const int& sz,const bool
         } else if (sz == 8){
             for (int i=f+1;i<(f+sz-2);i++){
                 if(f==0){
-                    if (i != 3)
+                    if (i != 3) //Avoids creating a diagonal connection with our obstacle
                         srow[i].setAdjacent(lrow+i+1,0);
                 }
                 else if(f==1){
-                    if (i != 4)
+                    if (i != 4) //Avoids creating a diagonal connection with our obstacle
                     srow[i].setAdjacent(lrow+i,5);
                 }
                 else return;            
@@ -293,7 +297,7 @@ board::operator std::string() const{
             ss<<setw(5-i)<<r<<" ";
             for(int k=0;k<5+i;k++){
                   if (rows[i][k].getMarble()=='-' || rows[i][k].getMarble()=='*'){
-                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET;
+                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET; //Colour coded marbles to act as a barrier
                 }
                 else{
                     ss<<rows[i][k].getMarble()<<" ";
@@ -306,7 +310,7 @@ board::operator std::string() const{
             ss<<setw(i-3)<<r<<" ";
             for(int k=0;k<5+8-i;k++){
                   if (rows[i][k].getMarble()=='-' || rows[i][k].getMarble()=='*'){
-                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET;
+                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET; //Colour coded marbles to act as a barrier
                 }
                 else{
                     ss<<rows[i][k].getMarble()<<" ";
@@ -324,31 +328,33 @@ board::operator std::string() const{
     ss<<endl;
     
     int b = 0;
-    for(int i=0;i<woc;i++) {
+    for(int i=0;i<woc;i++) { 
         // ss<<'O'<<" ";
-        b += 1;
+        b += 1; //Black marble Score counter
     }
     int w = 0;
     for(int i=0;i<boc;i++) {
         
-        w += 1;
+        w += 1; //White marble Score counter
     }   
         
         string s = "  ";
         int i = 0;
         for(; i < b; i++) {
-            s[i] = 'O'; 
+            s[i] = 'O';  //Appending the white marbles of the board
         }
         // s[i] = ')';
         
         string m = "  ";
         int x = 0;
         for(; x < w; x++) {
-            m[x] = '@'; 
+            m[x] = '@';  //Appending the black marbles of the board
         }
         // m[x] = ')';
 
         
+
+        //Score board display
         ss<<endl;
         ss << "-------------------------------------------------------\n|||||||||||||||||||||||||||||||||||||||||||||||||||||||\n||||                                               ||||\n||||    SCOREBOARD:                                ||||\n||||                                               ||||\n||||    Black:  " << b << " " << ESC<< ";" << RED_TXT <<"m"<< s << RESET <<"                               ||||" << "\n||||                                               ||||\n||||    White:  " << w << " " << ESC<< ";" << RED_TXT <<"m"<<m << RESET <<"                               ||||" << "\n||||                                               ||||\n||||_______________________________________________||||\n|||||||||||||||||||||||||||||||||||||||||||||||||||||||\n-------------------------------------------------------" << endl;
         ss<<endl;
@@ -471,6 +477,8 @@ bool board::executeMove(const char& m,const string& l,const int& n, const int& f
 bool board::inPlay() const{
     if((woc<2) && (boc<2))
         return true;
+
+    //Message to display if either marbles win the game
     if(woc >= 2) {
         cout << "-----------------------------\n||||" <<ESC<< ";" << GREEN_TXT <<"m"<<"    Black Wins!!!    "<<RESET<<"||||\n-----------------------------\n" << endl;
     }
