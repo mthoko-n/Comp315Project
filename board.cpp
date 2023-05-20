@@ -291,12 +291,7 @@ board::operator std::string() const{
         if(i<5){
             ss<<setw(5-i)<<r<<" ";
             for(int k=0;k<5+i;k++){
-                if (rows[i][k].getMarble()=='-' || rows[i][k].getMarble()=='*'){
-                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET;
-                }
-                else{
-                    ss<<rows[i][k].getMarble()<<" ";
-                }
+                ss<<rows[i][k].getMarble()<<" ";
             }
             ss<<endl;
             r--;
@@ -304,12 +299,7 @@ board::operator std::string() const{
         else{
             ss<<setw(i-3)<<r<<" ";
             for(int k=0;k<5+8-i;k++){
-                if (rows[i][k].getMarble()=='-' || rows[i][k].getMarble()=='*'){
-                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET;
-                }
-                else{
-                    ss<<rows[i][k].getMarble()<<" ";
-                }
+                ss<<rows[i][k].getMarble()<<" ";
             }
             ss<<d<<endl;
             r--;
@@ -321,12 +311,35 @@ board::operator std::string() const{
     for(;d<6;d++)
         ss<<d<<" ";
     ss<<endl;
-    for(int i=0;i<woc;i++)
-        ss<<'O'<<" ";
-    ss<<endl;
-    for(int i=0;i<boc;i++)
-        ss<<'@'<<" ";
-    ss<<endl; 
+    
+    int b = 0;
+    for(int i=0;i<woc;i++) {
+        // ss<<'O'<<" ";
+        b += 1;
+    }
+    int w = 0;
+    for(int i=0;i<boc;i++) {
+        
+        w += 1;
+    }   
+        
+        string s = "                                ||||";
+        int i = 0;
+        for(; i < b; i++) {
+            s[i] = 'O'; 
+        }
+        s[i] = ')';
+        
+        string m = "                                ||||";
+        int x = 0;
+        for(; x < w; x++) {
+            m[x] = '@'; 
+        }
+        m[x] = ')';
+
+        ss<<endl;
+        ss << "-------------------------------------------------------\n|||||||||||||||||||||||||||||||||||||||||||||||||||||||\n||||                                               ||||\n||||    SCOREBOARD:                                ||||\n||||                                               ||||\n||||    Black:  " << b << " (" << s << "\n||||                                               ||||\n||||    White:  " << w << " (" << m << "\n||||                                               ||||\n||||_______________________________________________||||\n|||||||||||||||||||||||||||||||||||||||||||||||||||||||\n-------------------------------------------------------" << endl;
+        ss<<endl;
     return ss.str();
 }
 
@@ -445,10 +458,11 @@ bool board::inPlay() const{
     if((woc<2) && (boc<2))
         return true;
     if(woc >= 2) {
-        cout << "Black Wins!!!" << endl;
+        cout << "-----------------------------\n||||    Black Wins!!!    ||||\n-----------------------------\n" << endl;
     }
     else if(boc >=2) {
-        cout << "White Wins!!!" << endl;
+        cout << "-----------------------------\n||||    White Wins!!!    ||||\n-----------------------------\n" << endl;
+
     }
     return false;
 }
