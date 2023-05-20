@@ -278,7 +278,7 @@ int main(int argc, char** argv) {
             std::cout<<"Initial State:"<<endl<<state;
            
             if(diff == 1)
-                w = new randAgent('O'); // white should always win
+                w = new easyAgent('O'); // white should always win
             
             else
                 w = new distAgent('O');
@@ -365,7 +365,7 @@ int main(int argc, char** argv) {
            
         
             if(diff == 1)
-                w = new randAgent('O'); // white should always win
+                w = new easyAgent('O'); // white should always win
             
             else
                 w = new distAgent('O');
