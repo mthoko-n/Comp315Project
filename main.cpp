@@ -115,7 +115,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                //SLP(1);
                 //system(CL);
 
                 ofstream lastMove("moves.txt");
@@ -183,7 +183,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                // SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
@@ -283,7 +283,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                // SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
@@ -329,8 +329,8 @@ int main(int argc, char** argv) {
             //ofstream lastMove("moves.txt");
 
             board abalone;
-            string state(abalone);
-            std::cout<<"Initial State:"<<endl<<state;
+            // string state(abalone);
+            // std::cout<<"Initial State:"<<endl<<state;
            
             agent* w = nullptr;
 
@@ -386,7 +386,7 @@ int main(int argc, char** argv) {
                     else{
                         std::cout<<"Invalid move!!"<<endl;
                     }
-                    SLP(1);
+                    // SLP(1);
                     ofstream lastMove("moves.txt");
                     lastMove<<i;
                     lastMove.close();
@@ -413,3 +413,4 @@ int main(int argc, char** argv) {
         std::cout << "Enter a number between 1 and 3" << endl;
     }
 }
+
