@@ -40,10 +40,14 @@ movement* pom=nullptr;//previous opponent's move
 movement* mym=nullptr;
 
 void cleanUp(){
-    delete w;
-    delete b;
-    delete pom;
-    delete mym;
+    if (w)
+        delete w;
+    if (b)
+        delete b;
+    if (pom)
+        delete pom;
+    if (mym)
+        delete mym;
 }
 
 #ifdef _WIN32
@@ -55,13 +59,15 @@ void cleanUp(){
         return false;
     }
 #endif
-void signalHandler(int signal) {
-    if (signal == SIGINT) {
-        std::cout << "\n\nPaused" << std::endl;
-        cleanUp();
+#ifdef __unix__
+    void signalHandler(int signal) {
+        if (signal == SIGINT) {
+            std::cout << "\n\nPaused\n" << std::endl;
+            cleanUp();
+        }
+        std::exit(0);
     }
-    std::exit(0);
-}
+#endif
 
 int main(int argc, char** argv) {
 
