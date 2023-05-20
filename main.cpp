@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
             std::cout<<"Seed: "<<now<<endl;
             string state(abalone);
             std::cout<<"Initial State:"<<endl<<state;
-            w = new randAgent('O');
+            w = new easyAgent('O');
             b = new distAgent('@');
             char c='O';
             int i = 0;
@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                SLP(0.5);
                 //system(CL);
 
                 ofstream lastMove("moves.txt");
