@@ -53,13 +53,15 @@ void cleanUp(){
         return false;
     }
 #endif
-void signalHandler(int signal) {
-    if (signal == SIGINT) {
-        std::cout << "\n\nPaused" << std::endl;
-        cleanUp();
+#ifdef __unix__
+    void signalHandler(int signal) {
+        if (signal == SIGINT) {
+            std::cout << "\n\nPaused\n" << std::endl;
+            cleanUp();
+        }
+        std::exit(0);
     }
-    std::exit(0);
-}
+#endif
 
 int main(int argc, char** argv) {
 
