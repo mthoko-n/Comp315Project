@@ -38,9 +38,9 @@ public:
     bool validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md,int& mtype,bool& scoreMove) const;
     bool executeMove(const char& m,const string& l,const int& n, const int& fd, const int& md);
     void refreshOffboardCounts();
+    const cell* getCell(const cell* cell, const string& location, const int& direction) const;
 };
 
 
 
 #endif /* BOARD_H */
-
