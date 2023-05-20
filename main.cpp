@@ -20,11 +20,47 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <csignal>
+#include <windows.h>
 
 using namespace std;
 
+board abalone;
+agent* w=nullptr;
+agent* b=nullptr;
+movement* pom=nullptr;//previous opponent's move
+movement* mym=nullptr;
+
+BOOL WINAPI signalHandler(DWORD signal) {
+    if (signal == CTRL_C_EVENT) {
+        std::cout << "Paused" << std::endl;
+        cleanUp();
+    }
+    return false;
+}
+void signalHandler(int signal) {
+    if (signal == SIGINT) {
+        std::cout << "Paused" << std::endl;
+        cleanUp();
+    }
+}
+void cleanUp(){
+    abalone.~board();
+    delete w;
+    delete b;
+    delete pom;
+    delete mym;
+}
+
 int main(int argc, char** argv) {
 
+    #ifdef __unix__
+        std::signal(SIGINT, signalHandler);
+    #endif
+
+    #ifdef _WIN32
+        SetConsoleCtrlHandler(signalHandler, TRUE);
+    #endif
 
    // Welcome Board
     std::cout << "-----------------------------------------------" << endl;
@@ -71,13 +107,10 @@ int main(int argc, char** argv) {
 
 
             std::cout<<"Seed: "<<now<<endl;
-            board abalone;
             string state(abalone);
             std::cout<<"Initial State:"<<endl<<state;
-            agent* w = new randAgent('O');
-            agent* b = new distAgent('@');
-            movement* pom=nullptr;//previous opponent's move
-            movement* mym=nullptr;//player's chosen move
+            w = new randAgent('O');
+            b = new distAgent('@');
             char c='O';
             int i = 0;
             while(abalone.inPlay()){//for(int i=0;i<200;i++){
@@ -98,6 +131,7 @@ int main(int argc, char** argv) {
                     }
                 }
                 catch(const string& s){
+                    cleanUp();
                     std::cout<<s;
                     return 1;
                 }        
@@ -115,7 +149,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                //SLP(1);
+                SLP(1);
                 //system(CL);
 
                 ofstream lastMove("moves.txt");
@@ -139,13 +173,10 @@ int main(int argc, char** argv) {
             storeSeed.close();
 
             std::cout<<"Seed: "<<now<<endl;
-            board abalone;
             string state(abalone);
             std::cout<<"Initial State:"<<endl<<state;
-            agent* w = new distAgent('O');
-            agent* b = new distAgent('@');
-            movement* pom=nullptr;//previous opponent's move
-            movement* mym=nullptr;//player's chosen move
+            w = new distAgent('O');
+            b = new distAgent('@');
             char c='O';
             int i = 0;
             while(abalone.inPlay()) {
@@ -166,6 +197,7 @@ int main(int argc, char** argv) {
                     }
                 }
                 catch(const string& s){
+                    cleanUp();
                     std::cout<<s;
                     return 1;
                 }        
@@ -183,7 +215,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                // SLP(1);
+                SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
@@ -229,12 +261,9 @@ int main(int argc, char** argv) {
 
             //ofstream lastMove("moves.txt");
 
-            board abalone;
             string state(abalone);
             std::cout<<"Initial State:"<<endl<<state;
            
-            agent* w = nullptr;
-
             if(diff == 1)
                 w = new randAgent('O'); // white should always win
             
@@ -242,9 +271,7 @@ int main(int argc, char** argv) {
                 w = new distAgent('O');
                
 
-            agent* b = new distAgent('@');   
-            movement* pom=nullptr;//previous opponent's move
-            movement* mym=nullptr;//player's chosen move
+            b = new distAgent('@');   
             char c='O';
             int n = 5;
             int i = 0;
@@ -266,6 +293,7 @@ int main(int argc, char** argv) {
                     }
                 }
                 catch(const string& s){
+                    cleanUp();
                     std::cout<<s;
                     return 1;
                 }        
@@ -283,7 +311,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                // SLP(1);
+                SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
@@ -328,11 +356,9 @@ int main(int argc, char** argv) {
 
             //ofstream lastMove("moves.txt");
 
-            board abalone;
             // string state(abalone);
             // std::cout<<"Initial State:"<<endl<<state;
            
-            agent* w = nullptr;
 
             if(diff == 1)
                 w = new randAgent('O'); // white should always win
@@ -340,9 +366,7 @@ int main(int argc, char** argv) {
             else
                 w = new distAgent('O');
 
-            agent* b = new distAgent('@');
-            movement* pom=nullptr;//previous opponent's move
-            movement* mym=nullptr;//player's chosen move
+            b = new distAgent('@');
             char c='O';
             int n = 5;
             int i = 0;
@@ -364,6 +388,7 @@ int main(int argc, char** argv) {
                     }
                 }
                 catch(const string& s){
+                    cleanUp();
                     std::cout<<s;
                     return 1;
                 }        
@@ -386,7 +411,7 @@ int main(int argc, char** argv) {
                     else{
                         std::cout<<"Invalid move!!"<<endl;
                     }
-                    // SLP(1);
+                    SLP(1);
                     ofstream lastMove("moves.txt");
                     lastMove<<i;
                     lastMove.close();
@@ -413,4 +438,3 @@ int main(int argc, char** argv) {
         std::cout << "Enter a number between 1 and 3" << endl;
     }
 }
-
