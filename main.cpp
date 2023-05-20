@@ -41,13 +41,15 @@ void cleanUp(){
     delete mym;
 }
 
-BOOL WINAPI signalHandler(DWORD signal) {
-    if (signal == CTRL_C_EVENT) {
-        std::cout << "Paused" << std::endl;
-        cleanUp();
+#ifdef _WIN32
+    BOOL WINAPI signalHandler(DWORD signal) {
+        if (signal == CTRL_C_EVENT) {
+            std::cout << "Paused" << std::endl;
+            cleanUp();
+        }
+        return false;
     }
-    return false;
-}
+#endif
 void signalHandler(int signal) {
     if (signal == SIGINT) {
         std::cout << "Paused" << std::endl;
