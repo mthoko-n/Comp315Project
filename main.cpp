@@ -34,7 +34,6 @@ movement* pom=nullptr;//previous opponent's move
 movement* mym=nullptr;
 
 void cleanUp(){
-    abalone.~board();
     delete w;
     delete b;
     delete pom;
@@ -44,7 +43,7 @@ void cleanUp(){
 #ifdef _WIN32
     BOOL WINAPI signalHandler(DWORD signal) {
         if (signal == CTRL_C_EVENT) {
-            std::cout << "Paused" << std::endl;
+            std::cout << "\nPaused" << std::endl;
             cleanUp();
         }
         return false;
@@ -52,9 +51,10 @@ void cleanUp(){
 #endif
 void signalHandler(int signal) {
     if (signal == SIGINT) {
-        std::cout << "Paused" << std::endl;
+        std::cout << "\n\nPaused" << std::endl;
         cleanUp();
     }
+    std::exit(0);
 }
 
 int main(int argc, char** argv) {
