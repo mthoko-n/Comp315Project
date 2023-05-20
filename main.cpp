@@ -34,10 +34,14 @@ movement* pom=nullptr;//previous opponent's move
 movement* mym=nullptr;
 
 void cleanUp(){
-    delete w;
-    delete b;
-    delete pom;
-    delete mym;
+    if (w)
+        delete w;
+    if (b)
+        delete b;
+    if (pom)
+        delete pom;
+    if (mym)
+        delete mym;
 }
 
 #ifdef _WIN32
