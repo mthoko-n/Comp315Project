@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
             std::cout<<"Seed: "<<now<<endl;
             string state(abalone);
             std::cout<<"Initial State:"<<endl<<state;
-            w = new randAgent('O');
+            w = new easyAgent('O');
             b = new distAgent('@');
             char c='O';
             int i = 0;

@@ -65,6 +65,8 @@ double score(const movement& a){
     double maxScore = 0;
     if(a.mtype<0)
         maxScore = 0.6;
+    else if(a.mtype>0 && a.scoreMove)
+        maxScore = 0.1;
     else if(a.mtype>0)
         maxScore = 0.2;
     else
