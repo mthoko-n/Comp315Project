@@ -7,22 +7,43 @@
 #include "board.h"
 #include <iomanip>
 #include <iostream>
-string traverse(const cell* start,const int& pd,const int& sd,const int& td){
+string traverse(const board& abalone, const cell* start,const int& pd,const int& sd,const int& td){
     string ts;
     const cell* linep = start;
     while(linep!=nullptr){
         const cell* cellp = linep;
         while(cellp!=nullptr){
-            ts+=(cellp->getLocation()+' '); 
-            cellp=cellp->getAdjacent(td);
+            string location = cellp->getLocation();
+            ts+=(location+' '); 
+            cellp = abalone.getCell(cellp, location, td);
         }
         if(linep->getAdjacent(pd)==nullptr)
-            linep=linep->getAdjacent(sd);
+            linep=abalone.getCell(linep, linep->getLocation(), sd);
         else
-            linep=linep->getAdjacent(pd);
+            linep=abalone.getCell(linep, linep->getLocation(), pd);
     }
     return ts;
 }
+
+//Jump over obstacle
+const cell* board::getCell(const cell* cell, const string& location, const int& direction) const{
+    
+    if (location == "D4" && direction == 0)
+            return cells.at("F6");
+    if (location == "E4" && direction == 1)
+            return cells.at("E6"); 
+    if (location == "F5" && direction == 2)
+            return cells.at("D5"); 
+    if (location == "F6" && direction == 3)
+            return cells.at("D4"); 
+    if (location == "E6" && direction == 4)
+            return cells.at("E4");
+    if (location == "D5" && direction == 5)
+            return cells.at("F5");
+    
+    return cell->getAdjacent(direction);
+}
+
 void setMarbles(cell* row,const int& z, const char& m, const bool& topSection){
     
     if(topSection){
@@ -297,14 +318,14 @@ board::operator std::string() const{
 }
 
 string board::traverseDiagonal() const{
-    map<string,cell*>::const_iterator it = cells.find(string("E1"));
+    map<string,cell*>::const_iterator it = cells.find(string("I7"));
     cell* start = it->second;
-    return traverse(start,0,1,2); 
+    return traverse(*this,start,3,2,2); 
 }
 string board::traverseHorizontal() const{
-    map<string,cell*>::const_iterator it = cells.find(string("C1"));
+    map<string,cell*>::const_iterator it = cells.find(string("I7"));
     cell* start = it->second;
-    return traverse(start,5,0,2);
+    return traverse(*this,start,2,3,3);
 }
 
 bool board::validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md, int& mtype, bool& scoreMove) const{
