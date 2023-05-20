@@ -21,7 +21,9 @@
 #include <string>
 #include <sstream>
 #include <csignal>
-#include <windows.h>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 using namespace std;
 
@@ -30,6 +32,14 @@ agent* w=nullptr;
 agent* b=nullptr;
 movement* pom=nullptr;//previous opponent's move
 movement* mym=nullptr;
+
+void cleanUp(){
+    abalone.~board();
+    delete w;
+    delete b;
+    delete pom;
+    delete mym;
+}
 
 BOOL WINAPI signalHandler(DWORD signal) {
     if (signal == CTRL_C_EVENT) {
@@ -43,13 +53,6 @@ void signalHandler(int signal) {
         std::cout << "Paused" << std::endl;
         cleanUp();
     }
-}
-void cleanUp(){
-    abalone.~board();
-    delete w;
-    delete b;
-    delete pom;
-    delete mym;
 }
 
 int main(int argc, char** argv) {
