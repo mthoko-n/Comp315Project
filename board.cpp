@@ -7,6 +7,9 @@
 #include "board.h"
 #include <iomanip>
 #include <iostream>
+#define ESC "\033["
+#define RED_TXT "31"
+#define RESET "\033[m"
 string traverse(const board& abalone, const cell* start,const int& pd,const int& sd,const int& td){
     string ts;
     const cell* linep = start;
@@ -288,7 +291,12 @@ board::operator std::string() const{
         if(i<5){
             ss<<setw(5-i)<<r<<" ";
             for(int k=0;k<5+i;k++){
-                ss<<rows[i][k].getMarble()<<" ";
+                if (rows[i][k].getMarble()=='-' || rows[i][k].getMarble()=='*'){
+                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET;
+                }
+                else{
+                    ss<<rows[i][k].getMarble()<<" ";
+                }
             }
             ss<<endl;
             r--;
@@ -296,7 +304,12 @@ board::operator std::string() const{
         else{
             ss<<setw(i-3)<<r<<" ";
             for(int k=0;k<5+8-i;k++){
-                ss<<rows[i][k].getMarble()<<" ";
+                if (rows[i][k].getMarble()=='-' || rows[i][k].getMarble()=='*'){
+                    ss<<ESC<< ";" << RED_TXT <<"m"<<rows[i][k].getMarble()<<" "<<RESET;
+                }
+                else{
+                    ss<<rows[i][k].getMarble()<<" ";
+                }
             }
             ss<<d<<endl;
             r--;
