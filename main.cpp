@@ -39,7 +39,9 @@ agent* b=nullptr;
 movement* pom=nullptr;//previous opponent's move
 movement* mym=nullptr;
 
-void cleanUp(){
+
+//Deallocates memory
+void cleanUp(){ 
     if (w)
         delete w;
     if (b)
@@ -50,8 +52,8 @@ void cleanUp(){
         delete mym;
 }
 
-#ifdef _WIN32
-    BOOL WINAPI signalHandler(DWORD signal) {
+#ifdef _WIN32 //Checks if the terminal was paused in Windows
+    BOOL WINAPI signalHandler(DWORD signal) { 
         if (signal == CTRL_C_EVENT) {
             std::cout << "\nPaused" << std::endl;
             cleanUp();
@@ -59,7 +61,7 @@ void cleanUp(){
         return false;
     }
 #endif
-#ifdef __unix__
+#ifdef __unix__ //Checks if the terminsl was paused iin Unix
     void signalHandler(int signal) {
         if (signal == SIGINT) {
             std::cout << "\n\nPaused\n" << std::endl;
@@ -251,8 +253,7 @@ int main(int argc, char** argv) {
 
     }
     else if (num == 2 ){
-            //Munazzah & Kupiwa & Ntando
-            //time_t now = time(NULL); // store the now object into a file.
+          
 
             ifstream storeSeed("storeSeed.txt");
             
@@ -271,12 +272,7 @@ int main(int argc, char** argv) {
             
             srand(now); // replay several games
 
-           
-            
-            //now = stoul(line);
-            
-
-            //ofstream lastMove("moves.txt");
+     
 
             string state(abalone);
             std::cout<<"Initial State:"<<endl<<state;
@@ -348,7 +344,7 @@ int main(int argc, char** argv) {
     
 
     else if (num == 3){
-        //Ntando & Kupiwa & Munazzah
+       
             ifstream storeSeed("storeSeed.txt");
             
             int now;
@@ -367,16 +363,7 @@ int main(int argc, char** argv) {
             srand(now); // replay several games
 
            
-            
-            //now = stoul(line);
-            
-
-            //ofstream lastMove("moves.txt");
-
-            // string state(abalone);
-            // std::cout<<"Initial State:"<<endl<<state;
-           
-
+        
             if(diff == 1)
                 w = new randAgent('O'); // white should always win
             
