@@ -353,7 +353,7 @@ int main(int argc, char** argv) {
     
 
     else if (num == 3){
-       
+            cout<<"Game Resumed" <<endl;
             ifstream storeSeed("storeSeed.txt");
             
             int now;
