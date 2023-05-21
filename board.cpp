@@ -327,6 +327,9 @@ board::operator std::string() const{
         ss<<d<<" ";
     ss<<endl;
     
+    //Kupiwa after this line
+
+
     int b = 0;
     for(int i=0;i<woc;i++) { 
         // ss<<'O'<<" ";
