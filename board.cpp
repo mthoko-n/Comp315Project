@@ -369,9 +369,9 @@ string board::traverseDiagonal() const{
     return traverse(*this,start,3,2,2); 
 }
 string board::traverseHorizontal() const{
-    map<string,cell*>::const_iterator it = cells.find(string("I7"));
+    map<string,cell*>::const_iterator it = cells.find(string("B1"));
     cell* start = it->second;
-    return traverse(*this,start,2,3,3);
+    return traverse(*this,start,5,0,1);
 }
 
 bool board::validateMove(const char& m,const string& l,const int& n, const int& fd, const int& md, int& mtype, bool& scoreMove) const{

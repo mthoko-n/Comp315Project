@@ -101,7 +101,7 @@ distAgent::distAgent(const char& c):agent(c){}
 movement distAgent::move(movement const* const om,board bd){
     vector<movement> mv = findMoves(bd);
     sort(mv.begin(), mv.end(), moveTNDPriority());
-    const int bm2c = 2;//consider only these top best moves.
+    const int bm2c = 3;//consider only these top best moves.
     if(mv.size()==0){
         throw string("Error! There are no available moves!");
     }
@@ -118,7 +118,7 @@ easyAgent::easyAgent(const char& c):agent(c){}
 movement easyAgent::move(movement const* const om,board bd){
     vector<movement> mv = findMoves(bd);
     sort(mv.begin(), mv.end(),lessPriority());
-    const int wm2c = 3;//consider only these top best moves.
+    const int wm2c = 3;//consider the worst first three moves.
     if(mv.size()==0){
         throw string("Error! There are no available moves!");
     }

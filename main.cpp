@@ -128,6 +128,12 @@ int main(int argc, char** argv) {
             std::cout<<"Seed: "<<now<<endl;
             string state(abalone);
             std::cout<<"Initial State:"<<endl<<state;
+
+         //  cout << abalone.traverseDiagonal()<<endl;
+          
+          
+          // cout << abalone.traverseHorizontal() <<endl;
+
             w = new easyAgent('O');
             b = new distAgent('@');
             char c='O';
@@ -168,7 +174,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                SLP(0.5);
+                SLP(0.2);
                 //system(CL);
 
                 ofstream lastMove("moves.txt");
@@ -234,7 +240,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+               // SLP(1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
@@ -283,8 +289,12 @@ int main(int argc, char** argv) {
             else
                 w = new distAgent('O');
                
+               
 
-            b = new distAgent('@');   
+            b = new distAgent('@'); 
+
+             //Kupiwa after this  line
+              
             char c='O';
             int n = 5;
             int i = 0;
@@ -324,7 +334,7 @@ int main(int argc, char** argv) {
                 else
                     c='O'; 
                 delete mym;
-                SLP(1);
+                SLP(0.1);
                 //system(CL);
                 ofstream lastMove("moves.txt");
                 lastMove<<i;
