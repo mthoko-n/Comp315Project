@@ -293,8 +293,7 @@ int main(int argc, char** argv) {
 
             b = new distAgent('@'); 
 
-             //Kupiwa after this  line
-              
+
             char c='O';
             int n = 5;
             int i = 0;
